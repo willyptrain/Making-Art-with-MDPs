@@ -6,34 +6,79 @@ class MDP:
 		self.actions = []
 		self.height = height
 		self.width = width
-		self.action_abilities = ["up", "right", "left"]
-		self.actions.append(np.array([[0, 0.8, 0], [0.1, 0, 0.1], [0, 0, 0]]))
+		self.action_abilities = {0: "up", 1: "left", 2: "right"}
+		self.actions.append(np.array([[0, 0.8, 0], [0.1, 0, 0.1], [0, 0, 0]])) #use 0.8, 0.1, 0.1...or just the 1?
 		self.actions.append(np.rot90(self.actions[0]))
 		self.actions.append(np.fliplr(self.actions[1]))
-		self.living_reward = -0.01
+		self.living_reward = -0.1
 		self.discount = 0.9
 		self.exit_coordinates = {"-1": [[0+1,2+1]], "1": [[1+1,2+1]]}
+		self.best_actions = []
 
 	def update_values(self):
 		old_values = self.values
 		new_values = np.zeros(shape=(self.height+2, self.width+2))
 		new_values[1: len(new_values)-1, 1:len(new_values[0])-1] = self.living_reward + self.discount*old_values[1:len(self.values)-1, 1:len(self.values)-1]
-
 		for i in self.exit_coordinates["-1"]:
 			new_values[i[0]][i[1]] = "-1"
 		for i in self.exit_coordinates["1"]:
-			new_values[i[0]][i[1]] = "1"	
-			
+			new_values[i[0]][i[1]] = "1"
+
 		self.values = new_values
 		
 	def convolve(self):
-		pass
+		modified_values = np.zeros(shape=(self.height, self.width))
+		self.best_actions = []
+		for r in range(1, len(self.values)-1):
+			for c in range(1, len(self.values[r])-1):
+				bound_box = self.values[r-1:r+2, c-1:c+2]
+				largest = np.sum(np.multiply(self.actions[0], bound_box))
+				largest_index = 0
+				for y in range(1, len(self.actions)):
+					temp_value = 0
+					temp_value = np.sum(np.multiply(self.actions[y], bound_box))
+					#print(self.action_abilities[y])
+					#print(temp_value)
+					if(temp_value > largest):
+						largest = temp_value
+						largest_index = y
+				modified_values[r-1][c-1] = largest
+				self.best_actions.append(self.action_abilities[y])
+	
+				
+		self.values = modified_values
+
+
 
 
 if __name__ == '__main__':
 	mdp = MDP(3,3)
-	print(mdp.values)
+	for i in range(0, 10):
+		#print(mdp.values)
+		mdp.update_values()
+		#print(mdp.values)
+		mdp.convolve()
+		break
 	mdp.update_values()
 	print(mdp.values)
+	print(mdp.best_actions)
+
+	'''
+		Example;
+			
+			0	0	0	0	0
+			
+			0	0	0	1	0
+			
+			0	0	0	-1	0
+	
+			0	0	0	0	0
+
+
+
+
+
+	'''
+
 
 
