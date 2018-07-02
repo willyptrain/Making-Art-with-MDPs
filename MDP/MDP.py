@@ -12,7 +12,7 @@ class MDP:
 		self.actions.append(np.fliplr(self.actions[1]))
 		self.living_reward = -0.1
 		self.discount = 0.9
-		self.exit_coordinates = {"-1": [[1+1,2+1]], "1": [[0+1,2+1]]}
+		self.exit_coordinates = {"-1": [[2+1,2+1]], "1": [[0+1,0+1]]}
 		self.best_actions = []
 		self.max_rewards = np.zeros(shape=(height,width))
 
@@ -56,7 +56,7 @@ class MDP:
 
 if __name__ == '__main__':
 	mdp = MDP(3,3)
-	for i in range(0, 10):
+	for i in range(0, 1):
 		#print(mdp.values)
 		mdp.update_values(i)
 		#print(mdp.values)
