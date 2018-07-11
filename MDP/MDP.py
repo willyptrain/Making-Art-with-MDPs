@@ -11,9 +11,9 @@ class MDP:
 		self.actions.append(np.array([[0, 0.8, 0], [0.1, 0, 0.1], [0, 0, 0]])) #use 0.8, 0.1, 0.1...or just the 1?
 		self.actions.append(np.rot90(self.actions[0]))
 		self.actions.append(np.fliplr(self.actions[1]))
-		self.living_reward = 0.1
+		self.living_reward = 0.001
 		self.discount = 1
-		self.exit_coordinates = {"-1": [[1+1,2+1]], "1": [[0+1,2+1]]}
+		self.exit_coordinates = {"-1": [[1+1,2+1]], "1": [[1+1,0+1]]}
 		self.best_actions = []
 		self.max_rewards = np.zeros(shape=(height,width))
 		self.finished = False
@@ -69,10 +69,9 @@ class MDP:
 
 				#print(switch_indexes)
 				self.actions = []
-				self.actions.append(np.array([[0, 0.8, 0], [0.1, 0, 0.1], [0, 0, 0]])) #use 0.8, 0.1, 0.1...or just the 1?
+				self.actions.append(np.array([[0, 0.8, 0], [0, 0, 0], [0.1, 0, 0.1]])) #use 0.8, 0.1, 0.1...or just the 1?
 				self.actions.append(np.rot90(self.actions[0]))
 				self.actions.append(np.fliplr(self.actions[1]))
-				print(self.actions)
 				actions = self.actions
 				elem_sums = []
 				r_center = (len(actions)-1)/2
@@ -102,7 +101,7 @@ if __name__ == '__main__':
 	mdp = MDP(3,3)
 	mdp.update_values()
 	orig_values = mdp.values.copy()
-	for i in range(0, 1):
+	for i in range(0, 10):
 		#print(mdp.values)
 		mdp.update_values()
 		#print(mdp.values)
@@ -124,7 +123,14 @@ if __name__ == '__main__':
 	
 			0	0	0	0	0
 
+[[ 0.54437251  0.101       0.54437251]
+ [ 1.          0.92351505 -1.        ]
+ [ 1.0012499   0.91761946  0.72990655]]
+['up', 'right', 'up']
+['left', 'left', 'left']
+['up', 'up', 'left']
 
+returns right at index (0, 1) because value at index (0, 2) == (0,0 ) and right comes after left
 
 
 
