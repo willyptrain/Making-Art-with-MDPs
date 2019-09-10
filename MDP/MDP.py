@@ -39,35 +39,10 @@ class MDP:
 			for c in range(1, len(self.values[r])-1):
 				bound_box = self.values[r-1:r+2, c-1:c+2]
 				switch_indexes = []
-				#print(switch_indexes)
-				'''largest = -1000000
-				largest_index = 0
-				for y in range(0, len(self.actions)):
-					temp_value = 0
-					temp_actions = self.actions
-					for i in range(0, len(switch_indexes)):
-						for r1 in range(0, len(bound_box)):
-							for c1 in range(0, len(bound))
-
-						if(bound_box[])
-						temp_actions[y][r][c] = 0#temp_actions[y][switch_indexes[i][0]][switch_indexes[i][1]]
-						
-						#temp_actions[y][switch_indexes[i][0]][switch_indexes[i][1]] = 0
-						#print(self.values)
-					temp_value = np.sum(np.multiply(temp_actions[y], bound_box))
-					if(temp_value > largest):
-						largest = temp_value
-						largest_index = y
-				self.max_rewards[r-1][c-1] = temp_value
-				modified_values[r-1][c-1] = largest
-				self.best_actions.append(self.action_abilities[largest_index])
-				'''
 				for r2 in range(0, len(bound_box)):
 					for c2 in range(0, len(bound_box[r2])):
 						if(bound_box[r2][c2] == math.pi):
 							switch_indexes.append([r2, c2])
-
-				#print(switch_indexes)
 				self.actions = []
 				self.actions.append(np.array([[0, 0.8, 0], [0, 0, 0], [0.1, 0, 0.1]])) #use 0.8, 0.1, 0.1...or just the 1?
 				self.actions.append(np.rot90(self.actions[0]))
@@ -84,21 +59,17 @@ class MDP:
 						actions[a][i[0],i[1]] = 0
 						actions[a][r_center][c_center] += prob_dir
 					elem_sums.append(np.sum(np.multiply(actions[a],bound_box)))
-				#print(elem_sums)
 				self.max_rewards[r-1][c-1] = np.amax(elem_sums)#np.sum(np.multiply(actions[a],bound_box))
 				largest_index = np.argmax(elem_sums)
 				modified_values[r-1][c-1] = np.amax(elem_sums)
 				self.best_actions.append(self.action_abilities[largest_index])
-				#print(self.best_actions)
 		self.values = modified_values
 
 	def train(self):
 		mdp.update_values()
 		orig_values = self.values.copy()
 		for i in range(0, 10):
-			#print(mdp.values)
 			self.update_values()
-			#print(mdp.values)
 			self.convolve()
 		self.update_values()
 		print(mdp.values[1:len(orig_values)-1,1:len(orig_values)-1])
