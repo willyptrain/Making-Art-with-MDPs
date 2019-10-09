@@ -2,7 +2,8 @@
 
 The basis of this program was to develop a Markov decision process algorithm for use within a grid world. 
 The program provides a simple command line interface by asking user for input, row by row, to provide the 
-Markov decision process to train off of. 
+Markov decision process to train off of. Upon receiving a grid (from user input), the program returns the optimal
+policy (up,down,right,left) for each grid square.
 
 Example (Running the program):
 
